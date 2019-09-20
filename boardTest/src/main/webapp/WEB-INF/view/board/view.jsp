@@ -24,50 +24,55 @@
     <tbody>
         <tr>
             <th scope="row">제목</th>
-            <td colspan="3">제목텍스트 제목텍스트 제목텍스트 제목텍스트 제목텍스트</td>
+            <td colspan="3">${dto.subject}</td>
         </tr>
         <tr>
             <th scope="row">작성자</th>
-            <td>홍길동</td>
+            <td>${dto.id}(${dto.name})</td>
             <th scope="row">작성일</th>
-            <td>2014.11.02</td>
+            <td>${dto.created}</td>
         </tr>
         <tr>
             <th scope="row">조회수</th>
-            <td colspan="3">0</td>
+            <td>${dto.hitCount}</td>
+            <th scope="row">접속 IP</th>
+            <td>${dto.ipAddr}</td>
         </tr>
         <tr>
             <th scope="row">내용</th>
             <td colspan="3">
                 <div class="view_cont">
-				        내용<br>
-				        내용<br>
-				        내용<br>
-				        내용<br>
-				        내용<br>
-				        내용<br>
-				        내용<br>
-				        내용<br>
+					${dto.content}
                 </div>
             </td>
         </tr>
         <tr>
             <th scope="row">파일첨부</th>
             <td colspan="3">
-                <p>파일첨부 영역</p>
-                <p>파일첨부 영역</p>
-                <p>파일첨부 영역</p>
-                <p>파일첨부 영역</p>
-                <p>파일첨부 영역</p>
-                <p>파일첨부 영역</p>
+            	<c:if test="${not empty dto.saveFilename}">
+            		<a href="<%=cp%>/board/download?boardCode=${dto.boardCode}">${dto.originalFilename}</a>
+            	</c:if>
+            	<c:if test="${empty dto.saveFilename}">
+            		<span>첨부파일이 없습니다.</span>
+            	</c:if>
             </td>
         </tr>
     </tbody>
 </table>
 <div class="btn_wrap">
-	<p class="f_left"><a href="boardList.html" class="button h30 btn_gray w70">목록</a></p>
+	<p class="f_left"><a href="<%=cp%>/board/list${query}" class="button h30 btn_gray w70">목록</a></p>
 	<p class="f_right">
-		<a href="<%=cp%>/board/update" class="button h30 btn_brown w70">수정</a>  
-		<a href="<%=cp%>/board/delete" class="button h30 btn_red w70">삭제</a>
+		<c:if test="${sessionScope.member.userIdx == dto.idx}">
+			<a href="<%=cp%>/board/update${query}&boardCode=${dto.boardCode}" class="button h30 btn_brown w70">수정</a>
+			<a href="<%=cp%>/board/delete${query}&boardCode=${dto.boardCode}" class="button h30 btn_red w70">삭제</a>
+		</c:if>  
 	</p>
 </div>
+
+<script type="text/javascript">
+	function fileDown() {
+		$.ajax({
+			
+		});
+	}
+</script>

@@ -43,7 +43,7 @@ public class BoardServiceImpl implements BoardService {
 		List<Board> list = null;
 		
 		try {
-			
+			list = dao.selectList("board.listBoard", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -56,7 +56,7 @@ public class BoardServiceImpl implements BoardService {
 		int result = 0;
 		
 		try {
-			
+			result = dao.selectOne("board.dataCount", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -69,7 +69,7 @@ public class BoardServiceImpl implements BoardService {
 		Board dto = null;
 		
 		try {
-			
+			dto = dao.selectOne("board.readBoard", boardCode);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -82,7 +82,7 @@ public class BoardServiceImpl implements BoardService {
 		int result = 0;
 		
 		try {
-			
+			result = dao.updateData("board.updateHitCount", boardCode);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -3,6 +3,7 @@ package com.sp.board;
 import org.springframework.web.multipart.MultipartFile;
 
 public class Board {
+	private int boardNum;
 	private int boardCode;
 	private String subject;
 	private String content;
@@ -18,7 +19,14 @@ public class Board {
 	private String originalFilename;
 	
 	private MultipartFile upload;
+	
+	public int getBoardNum() {
+		return boardNum;
+	}
 
+	public void setBoardNum(int boardNum) {
+		this.boardNum = boardNum;
+	}
 	public int getBoardCode() {
 		return boardCode;
 	}

@@ -6,7 +6,83 @@
 	<insert id="insertBoard" parameterType="com.sp.board.Board">
 		INSERT INTO nbbs(boardCode, idx, subject, content, ipAddr, originalFilename, saveFilename)
 			VALUES(nbbs_seq.NEXTVAL, #{idx}, #{subject}, #{content}, #{ipAddr}, #{originalFilename, jdbcType=VARCHAR},
-			#{originalFilename, jdbcType=VARCHAR})
+			#{saveFilename, jdbcType=VARCHAR})
 	</insert>
+	
+	<sql id="where-list">
+		<choose>
+			<when test="searchKey == 'all'">
+				(INSTR(subject, #{searchValue}) &gt; 0
+					OR INSTR(id, #{searchValue}) &gt; 0
+					OR INSTR(name, #{searchValue}) &gt; 0
+					OR TO_CHAR(created, 'YYYYMMDD') = #{searchValue}
+					OR TO_CHAR(created, 'YYYY-MM-DD') = #{searchValue}
+					OR TO_CHAR(created, 'YYYY.MM.DD') = #{searchValue})
+			</when>
+			<when test="searchKey == 'subject'">
+				INSTR(subject, #{searchValue}) &gt; 0
+			</when>
+			<when test="searchKey == 'writer'">
+				(INSTR(id, #{searchValue}) &gt; 0
+					OR INSTR(name, #{searchValue}) &gt; 0)	
+			</when>
+			<when test="searchKey == 'created'">
+				(TO_CHAR(created, 'YYYYMMDD') = #{searchValue}
+					OR TO_CHAR(created, 'YYYY-MM-DD') = #{searchValue}
+					OR TO_CHAR(created, 'YYYY.MM.DD') = #{searchValue})
+			</when>
+			<otherwise>
+				INSTR(${searchKey}, #{searchValue}) &gt; 0
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM nbbs n
+		JOIN tb_user tu
+		    ON n.idx = tu.idx
+		<where>
+			<if test="searchValue != null and searchValue != ''">
+				<include refid="where-list"/>
+			</if>
+		</where>
+	</select>
+	
+	<select id="listBoard" parameterType="map" resultType="com.sp.board.Board">
+		SELECT * FROM (
+	    SELECT ROWNUM rnum, tb.* FROM (
+	        SELECT boardCode, subject, hitCount, TO_CHAR(created, 'YYYY-MM-DD HH24:MI:SS') as created, saveFilename, originalFilename,
+	            tu.idx, tu.id, tu.name
+	        FROM nbbs n
+	        JOIN tb_user tu
+	            ON n.idx = tu.idx
+	        <where>
+	        	<if test="searchValue != null and searchValue != ''">
+	        		<include refid="where-list"/>
+	        	</if>
+	        </where>
+	        ORDER BY created DESC
+	    ) tb
+	<![CDATA[	  
+	    WHERE ROWNUM <= #{end}
+	) WHERE rnum >= #{start}
+	]]>
+	</select>
+	
+	<update id="updateHitCount" parameterType="Integer">
+		UPDATE nbbs SET
+			hitCount = hitCount + 1
+		WHERE boardCode = #{boardCode}
+	</update>
+	
+	<select id="readBoard" parameterType="Integer" resultType="com.sp.board.Board">
+		SELECT boardCode, subject, content, ipAddr, hitCount, TO_CHAR(created, 'YYYY-MM-DD HH24:MI;SS') as created, saveFilename, originalFilename,
+		    tu.idx, tu.id, tu.name
+		FROM nbbs n
+		JOIN tb_user tu
+		    ON n.idx = tu.idx
+		WHERE boardCode = #{boardCode}
+	</select>
 	
 </mapper>

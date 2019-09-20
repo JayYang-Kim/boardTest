@@ -70,5 +70,9 @@
 		</article>
 	</div>
 	
+	<!-- javascript -->
+	<script src="<%=cp%>/resources/js/lib/util.js"></script>
+	<script src="<%=cp%>/resources/js/lib/util-jquery.js"></script>
+	<script src="<%=cp%>/resources/js/lib/jquery.form.js"></script>
 </body>
 </html>

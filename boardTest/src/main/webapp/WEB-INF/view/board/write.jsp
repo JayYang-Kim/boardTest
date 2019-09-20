@@ -10,7 +10,7 @@
 <!-- 현재 페이지 정보 -->
 <div class="page_info">
 	<h2>게시글</h2>
-	<p>게시글 &gt; <strong>등록</strong></p>
+	<p>게시글 &gt; <strong>${mode == 'write' ? "등록" : "수정"}</strong></p>
 </div>
 
 <form name="boardForm" enctype="multipart/form-data" method="post">
@@ -55,11 +55,8 @@
 	</p>
 </div>
 
-<script type="text/javascript" src="<%=cp%>/resources/js/lib/jquery.form.js"></script>
 <script type="text/javascript">
 	function boardSend(mode) {
-		alert(mode);
-		
 		var f = document.boardForm;
 		
 		if(!f.subject.value) {
@@ -85,14 +82,12 @@
 			data:query,
 			dataType:"json",
 			success:function(data) {
-				console.log(data);
-				console.log(data.state);
 				if(data.state == "success") {
 					location.href = "<%=cp%>/board/list";
 					return;
-				} else {
+				} else {   
 					alert("게시글 등록이 실패했습니다.");
-					$("form[name='boardForm']").val("");
+					$("form[name='boardForm']")[0].reset();
 					return;
 				}
 			},
@@ -101,6 +96,7 @@
 				e.setRequestHeader("AJAX", true);
 			},
 			error:function(e) {
+				alert("로그인이 필요한 기능입니다.");
 				if(e.status == 403) {
 					location.href = "<%=cp%>/member/login";
 					return;

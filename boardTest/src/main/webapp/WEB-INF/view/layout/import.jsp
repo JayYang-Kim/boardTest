@@ -13,7 +13,7 @@
 <title>JINYANG | SITE</title>
 
 <!-- Favicon - 파비콘 (주소창 영역 아이콘) -->
-<link rel="Shortcut Icon" href="./resources/images/common/favicon.ico" />
+<link rel="Shortcut Icon" href="<%=cp%>/resources/images/common/favicon.ico" />
 
 <!-- style -->
 <link rel="stylesheet" href="<%=cp%>/resources/css/common.css" media="all" />
@@ -28,6 +28,4 @@
 <![endif]-->
 <script src="<%=cp%>/resources/js/plugins.js"></script>
 <script src="<%=cp%>/resources/js/ui_script.js"></script>
-<script src="<%=cp%>/resources/js/lib/util.js"></script>
-<script src="<%=cp%>/resources/js/lib/util-jquery.js"></script>
 <!-- //javascript -->
