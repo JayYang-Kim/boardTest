@@ -85,4 +85,18 @@
 		WHERE boardCode = #{boardCode}
 	</select>
 	
+	<update id="updateBoard" parameterType="com.sp.board.Board">
+		UPDATE nbbs SET
+			subject = #{subject},
+			content = #{content},
+			saveFilename = #{saveFilename, jdbcType=VARCHAR},
+			originalFilename = #{originalFilename, jdbcType=VARCHAR}
+		WHERE boardCode = #{boardCode}
+	</update>
+	
+	<delete id="deleteBoard" parameterType="Integer">
+		DELETE FROM nbbs
+		WHERE boardCode = #{boardCode}
+	</delete>
+	
 </mapper>

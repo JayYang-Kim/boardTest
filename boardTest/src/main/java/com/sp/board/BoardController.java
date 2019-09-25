@@ -209,11 +209,46 @@ public class BoardController {
 		return ".board.write";
 	}
 	
-	@RequestMapping(value="/barod/update", method=RequestMethod.POST)
+	@RequestMapping(value="/board/update", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> updateSubmit(Board dto,
 			HttpSession session) throws Exception {
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "board";
+		
+		int result = boardService.updateBoard(dto, pathname);
+		
+		String state = "success";
+		
+		if(result == 0) {
+			state = "fail";
+		}
+		
 		Map<String, Object> model = new HashMap<>();
+		model.put("state", state);
+		
+		return model;
+	}
+	
+	@RequestMapping(value="/board/delete")
+	@ResponseBody
+	public Map<String, Object> deleteBoard(@RequestParam int boardCode,
+			@RequestParam(defaultValue="") String saveFilename,
+			HttpSession session) throws Exception {
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "board";
+		
+		// 자료 삭제
+		int result = boardService.deleteBoard(boardCode, pathname, saveFilename);
+		
+		String state = "success";
+		
+		if(result == 0) {
+			state = "fail";
+		}
+		
+		Map<String, Object> model = new HashMap<>();
+		model.put("state", state);
 		
 		return model;
 	}

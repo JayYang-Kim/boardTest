@@ -9,7 +9,7 @@
 <h1 id="page_tit">게시글</h1>
 <!-- 현재 페이지 정보 -->
 <div class="page_info">
-	<h2>게시글h2>
+	<h2>게시글</h2>
 	<p>게시글 &gt; <strong>상세</strong></p>
 </div>
 
@@ -63,16 +63,48 @@
 	<p class="f_left"><a href="<%=cp%>/board/list${query}" class="button h30 btn_gray w70">목록</a></p>
 	<p class="f_right">
 		<c:if test="${sessionScope.member.userIdx == dto.idx}">
-			<a href="<%=cp%>/board/update${query}&boardCode=${dto.boardCode}" class="button h30 btn_brown w70">수정</a>
-			<a href="<%=cp%>/board/delete${query}&boardCode=${dto.boardCode}" class="button h30 btn_red w70">삭제</a>
+			<button type="button" onclick="location.href='<%=cp%>/board/update${query}&boardCode=${dto.boardCode}'" class="button h30 btn_brown w70">수정</button>
+			<button type="button" onclick="boardDelete();" class="button h30 btn_red w70">삭제</button>		
 		</c:if>  
 	</p>
 </div>
 
-<script type="text/javascript">
-	function fileDown() {
+<script type="text/javascript">	
+	function boardDelete() {
+		if(!confirm("삭제하시겠습니까?")) {
+			return;
+		}
+		
+		var url = "<%=cp%>/board/delete";
+		var query = "boardCode=${dto.boardCode}&saveFilename=${dto.saveFilename}";
+		
 		$.ajax({
-			
+			type:"post",
+			url:url,
+			data:query,
+			dataType:"json",
+			success:function(data) {
+				if(data.state == "success") {
+					location.href = "<%=cp%>/board/list";
+					return;
+				} else {   
+					alert("삭제를 실패했습니다.");
+					return;
+				}
+			},
+			beforeSend:function(e) {
+				console.log(e);
+				e.setRequestHeader("AJAX", true);
+			},
+			error:function(e) {
+				alert("로그인이 필요한 기능입니다.");
+				if(e.status == 403) {
+					location.href = "<%=cp%>/member/login";
+					return;
+				}
+				
+				console.log(e.responseText);
+			}
 		});
 	}
 </script>

@@ -25,7 +25,8 @@
 			</select>
 			<input type="text" name="searchValue" value="${searchValue}" title="검색내용입력" />
 			<span class="btn">
-				<a href="javascript:void(0)" onclick="sendSearch();" class="button">검색</a>
+				<button type="button" onclick="sendSearch();" class="button">검색</button>
+				<!-- <a href="javascript:void(0)" onclick="sendSearch();" class="button">검색</a> -->
 			</span>
 		</div>
 	</form>

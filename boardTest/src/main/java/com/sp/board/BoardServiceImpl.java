@@ -121,7 +121,21 @@ public class BoardServiceImpl implements BoardService {
 		int result = 0;
 		
 		try {
+			if(dto.getUpload() != null && !dto.getUpload().isEmpty()) {
+				// 이전파일 지우기
+				if(dto.getSaveFilename().length() != 0) {
+					fileManager.doFileDelete(dto.getSaveFilename(), pathname);
+				}
+				
+				String newFilename = fileManager.doFileUpload(dto.getUpload(), pathname);
+				
+				if(newFilename != null) {
+					dto.setSaveFilename(newFilename);
+					dto.setOriginalFilename(dto.getUpload().getOriginalFilename());
+				}
+			}
 			
+			result = dao.updateData("board.updateBoard", dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -134,7 +148,11 @@ public class BoardServiceImpl implements BoardService {
 		int result = 0;
 		
 		try {
+			if(saveFilename != null) {
+				fileManager.doFileDelete(saveFilename, pathname);
+			}
 			
+			result = dao.deleteData("board.deleteBoard", boardCode);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

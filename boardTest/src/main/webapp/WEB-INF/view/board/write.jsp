@@ -41,19 +41,20 @@
 			</tr>
 		</tbody>
 	</table>
+
+	<div class="btn_wrap">
+		<p class="f_left"><a href="<%=cp%>/board/list${query}" class="button h30 btn_gray w70">목록</a></p>
+		<p class="f_right">
+			<a href="<%=cp%>/board/list${query}" class="button h30 btn_gray w70">취소</a>  
+			<a href="javascript:void(0)" onclick="boardSend('${mode}');" class="button h30 btn_brown w70">${mode == "write" ? '등록' : "수정"}</a>
+			<c:if test="${mode == 'update'}">
+				<input type="hidden" name="boardCode" value="${dto.boardCode}"/>
+				<input type="hidden" name="saveFilename" value="${dto.saveFilename}"/>
+				<input type="hidden" name="originalFilename" value="${dto.originalFilename}"/>
+			</c:if>
+		</p>
+	</div>
 </form>
-<div class="btn_wrap">
-	<p class="f_left"><a href="<%=cp%>/board/list${query}" class="button h30 btn_gray w70">목록</a></p>
-	<p class="f_right">
-		<a href="<%=cp%>/board/list${query}" class="button h30 btn_gray w70">취소</a>  
-		<a href="javascript:void(0)" onclick="boardSend('${mode}');" class="button h30 btn_brown w70">${mode == "write" ? '등록' : "수정"}</a>
-		<c:if test="${mode == 'update'}">
-			<input type="hidden" name="boardCode" value="${dto.boardCode}"/>
-			<input type="hidden" name="saveFilename" value="${dto.saveFilename}"/>
-			<input type="hidden" name="originalFilename" value="${dto.originalFilename}"/>
-		</c:if>
-	</p>
-</div>
 
 <script type="text/javascript">
 	function boardSend(mode) {
@@ -104,7 +105,6 @@
 				
 				console.log(e.responseText);
 			}
-			
 		});
 	}
 </script>
