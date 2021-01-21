@@ -44,7 +44,7 @@
 		<spring-security.version>4.2.7.RELEASE</spring-security.version>
 		
 		<!-- jackson -->
-		<jackson.version>2.9.6</jackson.version>
+		<jackson.version>2.12.1</jackson.version>
 
 		<!-- org.json -->
 		<json.version>20180813</json.version>
